@@ -7,6 +7,12 @@ public class ShipController : MonoBehaviour
     [SerializeField] private Vector3 endPosition; // Posición final de la nave al inicio
     [SerializeField] private float duration; // Duración de la transición al inicio
     [SerializeField] int blinkNum;
+
+    // Referencia al prefab del disparo
+    [SerializeField] GameObject shootPrefab;
+
+    // Distancia desde el centro de la nave hasta la posición donde se creará el disparo
+    [SerializeField] float shootOffset = 0.5f;
     private bool active = false; // Variable para determinar si se puede realizar alguna acción
 
     private Rigidbody2D rb; // Referencia al componente Rigidbody
@@ -15,6 +21,25 @@ public class ShipController : MonoBehaviour
     {
         rb = GetComponent<Rigidbody2D>(); // Inicializamos la referencia al Rigidbody
         StartCoroutine("StartPlayer");
+    }
+
+    void Update()
+    {
+        // Comprobar si la nave está activa y se ha pulsado la tecla de disparo (barra espaciadora)
+        if (active && Input.GetKeyDown(KeyCode.Space))
+        {
+            // Calcular la posición donde se creará el disparo (un poco por delante de la nave)
+            Vector3 shootPosition = transform.position + Vector3.up * shootOffset;
+
+            // Crear el disparo en la posición calculada y sin rotación
+            Instantiate(shootPrefab, shootPosition, Quaternion.identity);
+        }
+    }
+
+    private void OnCollisionEnter2D(Collision2D other) {
+        if(other.gameObject.tag == "Enemy"){
+            Debug.Log("Colisión con nave enemiga"); 
+        }
     }
 
     private void FixedUpdate()

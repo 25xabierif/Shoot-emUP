@@ -8,6 +8,9 @@ TagManager:
   - BottomSide
   - LeftSide
   - RightSide
+  - Enemy
+  - Shoot
+  - Limits
   layers:
   - Default
   - TransparentFX
@@ -15,8 +18,8 @@ TagManager:
   - 
   - Water
   - UI
-  - 
-  - 
+  - Enemies
+  - Limits
   - 
   - 
   - 
