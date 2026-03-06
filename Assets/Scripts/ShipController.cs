@@ -8,6 +8,7 @@ public class ShipController : MonoBehaviour
     [SerializeField] private float duration; // Duración de la transición al inicio
     [SerializeField] int blinkNum;
 
+
     // Referencia al prefab del disparo
     [SerializeField] GameObject shootPrefab;
 
@@ -17,8 +18,14 @@ public class ShipController : MonoBehaviour
 
     private Rigidbody2D rb; // Referencia al componente Rigidbody
 
+    [SerializeField] GameObject explosion;
+    Vector3 initialPosition; //Posición inicial de la nave
+
+    [SerializeField] private TrailRenderer trail;
+
     private void Start()
     {
+        initialPosition = transform.position;
         rb = GetComponent<Rigidbody2D>(); // Inicializamos la referencia al Rigidbody
         StartCoroutine("StartPlayer");
     }
@@ -37,8 +44,16 @@ public class ShipController : MonoBehaviour
     }
 
     private void OnCollisionEnter2D(Collision2D other) {
-        if(other.gameObject.tag == "Enemy"){
-            Debug.Log("Colisión con nave enemiga"); 
+        string tag = other.gameObject.tag;
+        if(tag == "Enemy" || tag == "BigAsteroid"){
+            DestroyShip();
+        }
+    }
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+        if (other.CompareTag("Enemy") || other.CompareTag("BigAsteroid"))
+        {
+            DestroyShip();
         }
     }
 
@@ -56,6 +71,23 @@ public class ShipController : MonoBehaviour
 
         // Aplicamos una fuerza en la dirección obtenida
         rb.AddForce(direction * force, ForceMode2D.Impulse);
+    }
+
+    void DestroyShip(){
+        // Desactivar comportamiento
+        active = false;
+        // Instanciar la animación de la explosión
+        Instantiate(explosion, transform.position, Quaternion.identity);
+        //Desactivamos el trail para que no se muestre en el reinicio de la nave
+        trail.enabled = false;
+        // Resetear posición de la nave
+        transform.position = initialPosition;
+        //Reiniciamos el trail
+        trail.Clear();
+        //Reactivamos el trail
+        trail.enabled = true;
+        // Reiniciar la nave
+        StartCoroutine("StartPlayer");
     }
     IEnumerator StartPlayer()
     {

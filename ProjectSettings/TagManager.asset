@@ -11,6 +11,14 @@ TagManager:
   - Enemy
   - Shoot
   - Limits
+  - Trail
+  - BigAsteroid
+  - SmallAsteroid
+  - msg
+  - Score
+  - Life1
+  - Life2
+  - Life3
   layers:
   - Default
   - TransparentFX
@@ -19,9 +27,9 @@ TagManager:
   - Water
   - UI
   - Enemies
-  - Limits
-  - 
-  - 
+  - Asteroids
+  - LimitsH
+  - LimitsV
   - 
   - 
   - 

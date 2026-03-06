@@ -3,7 +3,8 @@ using UnityEngine;
 public class EnemyController : MonoBehaviour
 {
     // Velocidad de caída de la nave enemiga
-    [SerializeField] float speed; 
+    [SerializeField] float speed;
+    [SerializeField] GameObject explosionPrefab;
 
     // Altura a la que se destruirá la nave enemiga
     const float DESTROY_HEIGHT = -6f;
@@ -20,12 +21,21 @@ public class EnemyController : MonoBehaviour
         }
     }
 
-    private void OnTriggerEnter2D(Collider2D other) {
-        Destroy(gameObject);
-        Debug.Log("Colisión con nave enemiga"); 
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+        DestroyEnemy();
     }
 
-    private void OnCollisionEnter2D(Collision2D other) {
-        Debug.Log("Colisión con nave enemiga"); 
+    private void OnCollisionEnter2D(Collision2D other)
+    {
+        DestroyEnemy();
+    }
+    
+    void DestroyEnemy()
+    {
+        //Instanciamos la animación de la explosión en la posición de la nave enemiga
+        Instantiate(explosionPrefab, transform.position, Quaternion.identity);
+        //Destruimos la nave enemiga
+        Destroy(gameObject);
     }
 }
