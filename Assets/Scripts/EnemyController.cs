@@ -23,11 +23,13 @@ public class EnemyController : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D other)
     {
+        GameManager.GetInstance().AddScore(100);
         DestroyEnemy();
     }
 
     private void OnCollisionEnter2D(Collision2D other)
     {
+        GameManager.GetInstance().AddScore(100);
         DestroyEnemy();
     }
     

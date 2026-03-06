@@ -86,9 +86,22 @@ public class ShipController : MonoBehaviour
         trail.Clear();
         //Reactivamos el trail
         trail.enabled = true;
-        // Reiniciar la nave
-        StartCoroutine("StartPlayer");
+        // Reiniciar la naveGameManager.GetInstance().LoseLife();
+
+        //Restamos vidas cuando se destruye la nave
+        GameManager.GetInstance().LoseLife();
+
+        if (GameManager.GetInstance().HasLives())
+        {
+            transform.position = initialPosition;
+            StartCoroutine("StartPlayer");
+        }
+        else
+        {
+            gameObject.SetActive(false);
+        }
     }
+
     IEnumerator StartPlayer()
     {
         Material mat = GetComponent<SpriteRenderer>().material;
